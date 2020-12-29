@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="easymall.dao.ProductsDao">
+<!-- 实现商品种类的显示-->
+<select id="allcategorys" resultType="String">
+	select distinct(category) from products
+</select>
+
+<!-- 显示商品列表 -->
+<select id="prodlist" resultType="easymall.po.Products" parameterType="map">
+	select * from products where (price between #{minPrice} and #{maxPrice})
+	<if test="name!=null and name!=''">
+	and name like concat('%',#{name},'%')
+	</if>
+	<if test="category!=null and category!=''">
+	and category=#{category}
+	</if>
+</select>
+
+<!-- 显示单个商品 -->
+<select id="oneProduct" parameterType="String" resultType="easymall.po.Products">
+	select * from products where id=#{pid}
+</select>
+
+<!-- 实现分类显示 -->
+<select id="proclass" parameterType="String" resultType="easymall.po.Products">
+	select *  from products where category=#{category}
+</select>
+</mapper>
